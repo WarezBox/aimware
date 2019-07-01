@@ -52,5 +52,3 @@ local func = function()
 end
 
 callbacks.Register('Draw', func);
-
-https://i.imgur.com/pfZVU7I.jpg
