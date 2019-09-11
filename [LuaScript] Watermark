@@ -4,7 +4,7 @@ local deaths = {};
 local frametimes = {}
 local fps_prev = 0
 
-local font1 = draw.CreateFont('KaushanScript-Regular', 29)
+local font1 = draw.CreateFont('KaushanScript-Regular', 22)
 local font2 = draw.CreateFont('calibri', 15)
 
 local m_iPing = entities.GetPlayerResources():GetPropInt("m_iPing", client.GetLocalPlayerIndex())
