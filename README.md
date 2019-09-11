@@ -14,3 +14,4 @@ https://www.youtube.com/watch?v=IOyMDTsZ7XQ
 https://i.imgur.com/ybtGPLw.png
 
 [LuaScript] Watermark
+https://i.imgur.com/VRJlCqs.jpg
