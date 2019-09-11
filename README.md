@@ -12,3 +12,5 @@ https://www.youtube.com/watch?v=IOyMDTsZ7XQ
 
 [LuaScript] Vote Revealer
 https://i.imgur.com/ybtGPLw.png
+
+[LuaScript] Watermark
