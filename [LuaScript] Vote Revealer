@@ -268,5 +268,3 @@ displayed = 0;
 end
 end
 callbacks.Register("Draw", reset)
-
-https://i.imgur.com/H3ysF8Y.png
