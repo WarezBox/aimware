@@ -17,3 +17,6 @@ https://i.imgur.com/ybtGPLw.png
 https://i.imgur.com/VRJlCqs.jpg
 
 [LuaScript] Hitsound skeet.lua - Hitsounds from Skeet
+
+[LuaScript] Player Information Revealer
+https://i.imgur.com/VtMHLAx.png
