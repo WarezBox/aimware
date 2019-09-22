@@ -27,3 +27,6 @@ https://i.imgur.com/VtMHLAx.png
 
 [LuaScript] Snake Game
 https://i.imgur.com/pGJxANb.jpg
+
+[LuaScript] DrawBot
+https://i.imgur.com/auy4sGH.jpg
