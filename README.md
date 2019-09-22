@@ -24,3 +24,6 @@ https://i.imgur.com/VRJlCqs.jpg
 
 [LuaScript] Player Information Revealer
 https://i.imgur.com/VtMHLAx.png
+
+[LuaScript] Snake Game
+https://i.imgur.com/pGJxANb.jpg
