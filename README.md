@@ -1,7 +1,7 @@
 # aimware
 ================== .lua files for aimware ==================
 
-                     Compiled by 🅴🅽🅸🅶🅼🅰
+                      Compiled by 🅴🅽🅸🅶🅼🅰
 
 ================ https://discord.gg/REXPHWU ================
 
