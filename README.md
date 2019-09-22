@@ -16,5 +16,4 @@ https://i.imgur.com/ybtGPLw.png
 [LuaScript] Watermark
 https://i.imgur.com/VRJlCqs.jpg
 
-[LuaScript] Hitsound skeet.lua
-Hitsounds from Skeet
+[LuaScript] Hitsound skeet.lua - Hitsounds from Skeet
