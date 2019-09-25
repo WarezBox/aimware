@@ -30,3 +30,6 @@ https://i.imgur.com/pGJxANb.jpg
 
 [LuaScript] DrawBot
 https://i.imgur.com/auy4sGH.jpg
+
+[Theme] Skeet
+https://i.imgur.com/TSd3M70.jpg
