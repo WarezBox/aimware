@@ -48,3 +48,6 @@ https://i.imgur.com/POt3VZi.png
 
 [LuaScript] Server Picker
 https://i.imgur.com/0w3OoDw.jpg
+
+[LuaScript] Tachometer- Speedometer
+https://i.imgur.com/xfGRIKK.png
