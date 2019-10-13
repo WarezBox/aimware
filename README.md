@@ -41,4 +41,4 @@ https://i.imgur.com/VAMuIaP.jpg
 https://www.youtube.com/watch?v=NI3zdhGQL0Q
 
 [LuaScript] Advanced Weapon Zoom
-https://www.youtube.com/watch?v=l9khbRCcPS8
+https://www.youtube.com/watch?v=l9khbRCcPS8 
