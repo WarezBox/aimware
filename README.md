@@ -42,3 +42,6 @@ https://www.youtube.com/watch?v=NI3zdhGQL0Q
 
 [LuaScript] Advanced Weapon Zoom
 https://www.youtube.com/watch?v=l9khbRCcPS8
+
+[LuaScript] Auto Buy
+https://i.imgur.com/POt3VZi.png
