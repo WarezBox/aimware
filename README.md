@@ -34,6 +34,9 @@ https://i.imgur.com/auy4sGH.jpg
 [Theme] Skeet
 https://i.imgur.com/TSd3M70.jpg
 
+[Theme] Fatality Theme
+https://i.imgur.com/VAMuIaP.jpg
+
 [LuaScript] FlappyBird
 https://www.youtube.com/watch?v=NI3zdhGQL0Q
 
