@@ -45,3 +45,6 @@ https://www.youtube.com/watch?v=l9khbRCcPS8
 
 [LuaScript] Auto Buy
 https://i.imgur.com/POt3VZi.png
+
+[LuaScript] Server Picker
+https://i.imgur.com/0w3OoDw.jpg
