@@ -3,7 +3,7 @@
 
                       Compiled by 🅴🅽🅸🅶🅼🅰
 
-============= https://discord.gg/REXPHWU =============
+============= https://discord.gg/FAXupfd =============
 
 [LuaScript] Anti Kick: 
 https://www.youtube.com/watch?v=RR8tNbyK_-8
