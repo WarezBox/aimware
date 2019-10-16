@@ -51,3 +51,8 @@ https://i.imgur.com/0w3OoDw.jpg
 
 [LuaScript] Tachometer- Speedometer
 https://i.imgur.com/xfGRIKK.png
+
+[LuaScript]  Custom hitsound with Healthshot hitmarker
+For the hitsound to work, download this archive and unzip it to ...\Counter-Strike Global Offensive\csgo\sound
+https://mega.nz/#!E3hF1SzL!DpV73W89546PiTAIYFliNKtsPnhwGISYmpyU-_PS0bc
+https://www.youtube.com/watch?v=tgEDeKPeHh8
