@@ -56,3 +56,6 @@ https://i.imgur.com/xfGRIKK.png
 For the hitsound to work, download this archive and unzip it to ...\Counter-Strike Global Offensive\csgo\sound
 https://mega.nz/#!E3hF1SzL!DpV73W89546PiTAIYFliNKtsPnhwGISYmpyU-_PS0bc
 https://www.youtube.com/watch?v=tgEDeKPeHh8
+
+[LuaScript] ChickenChanger 4.2
+https://i.imgur.com/tE8mcLC.gif
