@@ -59,3 +59,6 @@ https://www.youtube.com/watch?v=tgEDeKPeHh8
 
 [LuaScript] ChickenChanger 4.2
 https://i.imgur.com/tE8mcLC.gif
+
+[LuaScript] Rainbow Menu
+Alternate menu colors
