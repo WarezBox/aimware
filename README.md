@@ -62,3 +62,6 @@ https://i.imgur.com/tE8mcLC.gif
 
 [LuaScript] Rainbow Menu
 Alternate menu colors
+
+[LuaScript] AWZ - Advanced Weapon Zoom
+https://www.youtube.com/watch?v=l9khbRCcPS8
