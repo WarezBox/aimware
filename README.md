@@ -65,3 +65,6 @@ Alternate menu colors
 
 [LuaScript] AWZ - Advanced Weapon Zoom
 https://www.youtube.com/watch?v=l9khbRCcPS8
+
+[LuaScript] Animated Preserve Killfeed
+https://gyazo.com/de7d078050dca487fada85963b661ed5
