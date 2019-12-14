@@ -71,3 +71,6 @@ https://gyazo.com/de7d078050dca487fada85963b661ed5
 
 [LuaScript] Aimbot History by THEBOYS
 https://i.imgur.com/fixXRxa.png | https://i.imgur.com/uMGtOvY.png
+
+[LuaScript] Disable Shadows
+https://i.imgur.com/5NSa70o.gif
