@@ -74,3 +74,7 @@ https://i.imgur.com/fixXRxa.png | https://i.imgur.com/uMGtOvY.png
 
 [LuaScript] Disable Shadows
 https://i.imgur.com/5NSa70o.gif
+
+[LuaScript] Onion's Menu V1.2.8
+https://i.imgur.com/l3JWoIc.jpg
+
