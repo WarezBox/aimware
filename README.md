@@ -78,3 +78,5 @@ https://i.imgur.com/5NSa70o.gif
 [LuaScript] Onion's Menu V1.2.8
 https://i.imgur.com/l3JWoIc.jpg
 
+[LuaScript] ewan's Essentials
+https://i.imgur.com/OFefXDu.png
