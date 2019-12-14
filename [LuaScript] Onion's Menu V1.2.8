@@ -1,0 +1,657 @@
+-- Main Window
+local windowW, windowH, menuPressed, j = 500, 450, 1, 0
+local mainWindow = gui.Window("onion_menu", "Onion's LUA Menu", 20, 20, windowW, windowH)
+
+-- Groups
+local settingsGroup = gui.Groupbox(mainWindow, "Options", 12, 12, (windowW / 2) - 18, ((windowH - 58) / 2) - 6)
+local settingsGroup2 = gui.Groupbox(mainWindow, "Safe Levelup", (windowW / 2) + 6, 12, (windowW / 2) - 18, ((windowH - 58) / 2) - 6)
+local settingsGroup3 = gui.Groupbox(mainWindow, "Watermark", (windowW / 2) + 6, ((windowH - 58) / 2) + 18, (windowW / 2) - 18, ((windowH - 58) / 2) - 6)
+local settingsGroup4 = gui.Groupbox(mainWindow, "Extras", 12, ((windowH - 58) / 2) + 18, (windowW / 2) - 18, ((windowH - 58) / 2) - 6)
+
+-- Fonts
+local watermarkFont = draw.CreateFont('Verdana', 16)
+local spectateFont = draw.CreateFont('Verdana', 14)
+local hudFont = draw.CreateFont('Verdana', 15)
+
+-- Auto Updater
+local updateEnable = gui.Checkbox(settingsGroup, 'onion_update_enable', 'Auto Update', true)
+local luaFileName = GetScriptName()
+local luaFileDownloadURL = "https://raw.githubusercontent.com/urmumusesmyhakerino/onions_lua_repo/master/onions_menu.lua"
+local luaVersionURL = "https://raw.githubusercontent.com/urmumusesmyhakerino/onions_lua_repo/master/version.txt"
+local luaVersion = "1.2.8"
+local luaUpdateText = ""
+local luaVersionCheckDone = false
+local luaUpdateAvailable = false
+local luaUpdateDownloaded = false
+local luaUpdated = false
+
+-- Watermark
+local watermarkEnable = gui.Checkbox(settingsGroup, 'onion_watermark_enable', 'Watermark', true)
+local watermarkName = gui.Checkbox(settingsGroup3, 'onion_watermark_name', 'Name', true)
+local watermarkCheat = gui.Checkbox(settingsGroup3, 'onion_watermark_cheat', 'Cheat', true)
+local watermarkPing = gui.Checkbox(settingsGroup3, 'onion_watermark_ping', 'Ping', true)
+local watermarkTickrate = gui.Checkbox(settingsGroup3, 'onion_watermark_tickrate', 'Tickrate', true)
+local watermarkServer = gui.Checkbox(settingsGroup3, 'onion_watermark_server', 'Server', true)
+local watermarkMap = gui.Checkbox(settingsGroup3, 'onion_watermark_map', 'Map', true)
+local watermarkPosition = gui.Slider(settingsGroup3, "onion_watermark_position", "Position", 0, 0, 2)
+
+-- Velocity
+local velocityEnable = gui.Checkbox(settingsGroup, 'onion_velocity_enable', 'Velocity', true)
+
+-- Kill / Death Counter
+local counterEnable = gui.Checkbox(settingsGroup, 'onion_counter_enable', 'Stat Counter', true)
+
+-- Spectator List
+local spectateEnable = gui.Checkbox(settingsGroup, 'onion_spectate_list', 'Spectator List', true)
+
+-- Custom Death Notices
+local deathNoticeEnable = gui.Checkbox(settingsGroup, 'onion_deathnotice_enable', 'Preserve Killfeed', true)
+local deathNoticeCVar = "cl_drawhud_force_deathnotices"
+local deathNoticeKills = {}
+
+-- Replacement HUDPaint
+local onionsHUD = gui.Checkbox(settingsGroup, 'onion_hud_enable', 'Replace HUD', true)
+local onionsHUDCVar = "cl_draw_only_deathnotices"
+
+-- Team Spammer
+local teamSpam = gui.Checkbox(settingsGroup, 'onion_team_spam', 'Team Spam', true)
+local teamEnable = gui.Checkbox(settingsGroup, 'onion_team_gui', 'Spammer Enable', true)
+
+-- Deathmatch Safe Leveler
+local deathmatchEnable = gui.Checkbox(settingsGroup, 'onion_deathmatch_enable', 'Safe Levelup', true)
+local deathmatchScoreHUD = gui.Checkbox(settingsGroup2, 'onion_deathmatch_score_hud', 'Levelup Score HUD', true)
+local deathmatchTimeHUD = gui.Checkbox(settingsGroup2, 'onion_deathmatch_time_hud', 'Levelup Time HUD', true)
+local deathmatchScore = gui.Slider(settingsGroup2, "onion_deathmatch_score", "Safe Spectate (Score)", 300, 300, 450)
+local deathmatchTime = gui.Slider(settingsGroup2, "onion_deathmatch_time", "Spectate Anti-AFK (Seconds)", 180, 180, 300)
+
+-- Colors
+local rainbowEnable = gui.Checkbox(settingsGroup4, 'onion_color_global_rainbow', 'Rainbow', true)
+local globalColor = gui.ColorEntry(globalColorPicker, "Global Color", 255, 255, 255, 255)
+local rainbowSpeed = gui.Slider(settingsGroup4, "onion_color_global_rainbow_speed", "Rainbow Speed", 1, 0.5, 5)
+local rightHeightOffset = gui.Slider(settingsGroup4, "onion_position_right_height", "Right Height", 0, -250, 250)
+local leftHeightOffset = gui.Slider(settingsGroup4, "onion_position_left_height", "Left Height", 0, -250, 250)
+
+-- Some Variables
+local scrW, scrH
+local localPlayer
+local last_spam = 0
+local team = "1"
+local last_team_in = 1
+local last_anti_afk = 0
+local playerResources
+local r, g, b, a = globalColor:GetValue()
+local maxVelocity
+local curVelocity
+local kills
+local deaths
+local vX, vY = 0, 0
+local leftHeight
+local rightHeight
+local curScore
+local firstLoad
+local localPlayerHealth
+
+--
+-- Draw Functions
+--
+
+local function drawRectFill(r, g, b, a, x, y, w, h)
+    draw.Color(r, g, b, a)
+    draw.FilledRect(x, y, x + w, y + h)
+end
+
+local function roundedRectFill(r, g, b, a, x, y, w, h)
+    draw.Color(r, g, b, a)
+    draw.RoundedRectFill(x, y, x + w, y + h)
+end
+
+local function drawText(r, g, b, a, x, y, font, str)
+	draw.Color(r, g, b, a)
+	draw.SetFont(font)
+	draw.Text( x, y, str)
+end
+
+local function doRainbow(speed)
+    r = math.floor(math.sin((globals.RealTime()) * speed) * 127 + 128)
+    g = math.floor(math.sin((globals.RealTime()) * speed + 2) * 127 + 128)
+    b = math.floor(math.sin((globals.RealTime()) * speed + 4) * 127 + 128)
+	
+	globalColor:SetValue(r, g, b)
+end
+
+--
+-- Extra Functions
+--
+
+local function getPropFloat(lp, wat)
+    return lp:GetPropFloat("localdata", wat)
+end
+
+local function getPropInt(lp, wat)
+    return lp:GetPropInt("localdata", wat)
+end
+
+-- Make a table of current spectators
+local function grabSpectateList()
+    local spectators = {}
+    local lp = entities.GetLocalPlayer()
+     if lp ~= nil then
+      local players = entities.FindByClass("CCSPlayer")
+        for i = 1, #players do
+            local players = players[i]
+            if players ~= lp and players:GetHealth() <= 0 then
+                local name = players:GetName()
+                if players:GetPropEntity("m_hObserverTarget") ~= nil then
+                    local playerindex = players:GetIndex()
+                    if name ~= "GOTV" and playerindex ~= 1 then
+                        local target = players:GetPropEntity("m_hObserverTarget")
+                        if target:IsPlayer() then
+                            local targetindex = target:GetIndex()
+                            local myindex = client.GetLocalPlayerIndex()
+                            if lp:IsAlive() then
+                                if targetindex == myindex then
+                                    table.insert(spectators, players)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return spectators;
+end
+
+--
+-- Callbacks
+--
+
+-- Create a table of players killed by the local player in the current round
+local function gameEvent(event)
+	local eventName = event:GetName()
+
+	if (eventName == "round_start" or name == "client_disconnect" or name == "round_announce_match_start") then
+		deathNoticeKills = {}
+		return
+	end
+
+	if (eventName == "player_death") then
+		local attacker = entities.GetByUserID(event:GetInt("attacker"))
+		local victim = entities.GetByUserID(event:GetInt("userid"))
+
+		if (attacker == nil or victim == nil) then
+			return
+		end
+
+		if (attacker:GetName() == nil or attacker:GetTeamNumber() == nil) then
+			return
+		end
+
+		if (victim:GetName() == nil or victim:GetTeamNumber() == nil) then
+			return
+		end
+
+		if (victim:GetIndex() == client.GetLocalPlayerIndex()) then
+			deathNoticeKills = {}
+			return
+		end
+
+		if (attacker:GetIndex() ~= client.GetLocalPlayerIndex()) then
+			return
+		end
+
+		table.insert(deathNoticeKills, {attacker, victim})
+	end
+end
+
+-- Setup the variables for the drawing functions
+local function variableSet()
+	if input.IsButtonPressed(gui.GetValue("msc_menutoggle")) then
+        menuPressed = menuPressed == 0 and 1 or 0
+    end
+    mainWindow:SetActive(menuPressed)
+
+    if (rainbowEnable:GetValue() == true) then
+		doRainbow(rainbowSpeed:GetValue())
+	end
+
+	scrW, scrH = draw.GetScreenSize()
+    localPlayer = entities.GetLocalPlayer()
+    leftHeight = (scrH / 2) + leftHeightOffset:GetValue()
+	rightHeight = (scrH / 2) + rightHeightOffset:GetValue()
+	playerResources = entities.GetPlayerResources()
+
+	if (localPlayer ~= nil) then
+		maxVelocity = client.GetConVar("sv_maxvelocity")
+		vX, vY = getPropFloat(localPlayer, 'm_vecVelocity[0]'), getPropFloat(localPlayer, 'm_vecVelocity[1]')
+		kills = playerResources:GetPropInt("m_iKills", localPlayer:GetIndex())
+		deaths = playerResources:GetPropInt("m_iDeaths", localPlayer:GetIndex())
+		curScore = playerResources:GetPropInt("m_iScore", localPlayer:GetIndex())
+		localPlayerHealth = playerResources:GetPropInt("m_iHealth", localPlayer:GetIndex())
+	else
+		maxVelocity = 1
+		vX, vY = 0, 0
+		kills = 0
+		deaths = 0
+		curScore = 0
+		last_spam = 0
+		last_anti_afk = 0
+		firstLoad = true
+		localPlayerHealth = 0
+	end
+
+	curVelocity = math.floor(math.min(10000, math.sqrt(vX * vX + vY * vY) + 0.5))
+end
+
+--
+-- Drawing Functions
+--
+
+-- Updater
+local function doUpdate()
+	if (updateEnable:GetValue() == true) then
+		if (luaUpdated == false) then
+			if (gui.GetValue("lua_allow_http") == false or gui.GetValue("lua_allow_cfg") == false) then
+				luaUpdateText = "Unable to update, please enable config editing and config writing!"
+				return
+			else
+				if (luaUpdateAvailable and not luaUpdateDownloaded) then
+			        luaUpdateText = "Onion's Menu has Auto Updated! Please Reload."
+
+			        local new_version_content = http.Get(luaFileDownloadURL)
+			        local old_script = file.Open(luaFileName, "w")
+			        old_script:Write(new_version_content)
+			        old_script:Close()
+			        luaUpdateAvailable = false
+            		luaUpdateDownloaded = true
+			    end
+
+				if (luaUpdateDownloaded == true) then
+					luaUpdated = true
+					return
+				end
+
+				if (not luaVersionCheckDone) then
+					luaVersionCheckDone = true
+					local version = http.Get(luaVersionURL)
+					if (version ~= luaVersion) then
+						luaUpdateAvailable = true
+					else
+						luaUpdated = true
+					end
+				end
+			end
+		end
+
+		if (luaUpdateText ~= "") then
+			draw.SetFont(watermarkFont)
+			local textW, textH = draw.GetTextSize(luaUpdateText)
+
+			drawRectFill(r, g, b, a, 10, 10, textW + 10, 3)
+			drawRectFill(20, 20, 20, 120, 10, 13, textW + 10, 10 + textH)
+			drawText(255, 255, 255, 255, 15, 18, watermarkFont, luaUpdateText)
+		end
+	end
+end
+
+-- Death Notices
+local function deathNotice()
+	if (deathNoticeEnable:GetValue() == true) then
+		if (entities.GetLocalPlayer() == nil or engine.GetMapName() == nil or engine.GetServerIP() == nil) then
+			return
+		end
+
+		if (client.GetConVar(deathNoticeCVar) ~= "-1") then 
+			client.SetConVar(deathNoticeCVar, -1, true)
+		end
+
+		local noticeHeight = 50
+
+		for index, val in pairs(deathNoticeKills) do
+			local attacker_entity	= val[1]
+			local victim_entity 	= val[2]
+			local victim_name 		= victim_entity:GetName()
+			local attacker_name 	= attacker_entity:GetName()
+
+			if (victim_name ~= nil and attacker_name ~= nil) then
+				if (string.len(attacker_name) > 23) then
+					attacker_name = string.sub(attacker_name, 0, 23) .. "..."
+				end
+
+				if (string.len(victim_name) > 23) then
+					victim_name = string.sub(victim_name, 0, 23) .. "..."
+				end
+
+				draw.SetFont(watermarkFont)
+				local killWidth, killHeight = draw.GetTextSize(attacker_name .. " Killed " .. victim_name)
+
+				drawRectFill(r, g, b, a, scrW - (killWidth + 20), noticeHeight, killWidth + 10, 3)
+				drawRectFill(20, 20, 20, 120, scrW - (killWidth + 20), noticeHeight + 3, killWidth + 10, killHeight + 20)
+				drawText(255, 255, 255, 255, scrW - ((killWidth / 2) + ((killWidth) / 2)) - 15, noticeHeight + 13, watermarkFont, attacker_name .. " Killed " .. victim_name)
+
+				noticeHeight = noticeHeight + killHeight + 28
+			end
+		end
+	else
+		if (entities.GetLocalPlayer() == nil or engine.GetMapName() == nil or engine.GetServerIP() == nil) then
+			return
+		end
+
+		if (client.GetConVar(deathNoticeCVar) ~= "0") then 
+			client.SetConVar(deathNoticeCVar, 0, true)
+		end
+	end
+end
+
+-- Velocity
+local function drawVelocity()
+	if (velocityEnable:GetValue() == true) then
+		if (maxVelocity ~= nil and curVelocity ~= nil) then
+			draw.SetFont(watermarkFont)
+			local textW, textH = draw.GetTextSize("m/s: " .. curVelocity)
+
+			drawRectFill(r, g, b, a, 10, leftHeight -  (11 / 2), 160, 3)
+			drawRectFill(20, 20, 20, 120, 10, (leftHeight -  (11 / 2)) + 3, 160, 20 + textH)
+			drawRectFill(25, 25, 25, 255, 15, (leftHeight -  (11 / 2)) + 8, 150, 2)
+			drawRectFill(255, 255, 255, 255, 15, (leftHeight -  (11 / 2)) + 8, 150 * (curVelocity / maxVelocity), 2)
+
+			drawText(255, 255, 255, 255, 15 + (80 - (textW / 2)), (leftHeight -  (11 / 2)) + 15, watermarkFont, "m/s: " .. curVelocity)
+			leftHeight = (leftHeight -  (11 / 2)) + 23 + textH
+		end
+	end
+end
+
+-- Kills / Deaths
+local function drawStats()
+	if (counterEnable:GetValue() == true) then
+		if (kills ~= nil and deaths ~= nil) then
+			draw.SetFont(watermarkFont)
+			local textW3, textH3 = draw.GetTextSize("Kills: " .. kills)
+			local textW2, textH2 = draw.GetTextSize("Died: " .. deaths)
+
+			drawRectFill(r, g, b, a, 10, leftHeight + 10, 77, 3)
+			drawRectFill(20, 20, 20, 120, 10, leftHeight + 13, 77, 10 + textH2)
+
+			drawRectFill(r, g, b, a, 93, leftHeight + 10, 77, 3)
+			drawRectFill(20, 20, 20, 120, 93, leftHeight + 13, 77, 10 + textH2)
+
+			drawText(255, 255, 255, 255, 10 + ((77 / 2) - (textW3 / 2)), leftHeight + 18, watermarkFont, "Kills: " .. kills)
+			drawText(255, 255, 255, 255, 93 + ((77 / 2) - (textW2 / 2)), leftHeight + 18, watermarkFont, "Died: " .. deaths)
+
+			leftHeight = leftHeight + 23 + textH2
+		end
+	end
+end
+
+-- Team Spam Function and Drawing
+local function teamSpammer()
+	if (teamEnable:GetValue() == true) then
+		draw.SetFont(watermarkFont)
+
+		if (localPlayer ~= nil) then
+			if (teamSpam:GetValue() == true) then
+				if (localPlayerHealth <= 0 or playerResources:GetPropInt("m_iDeaths", localPlayer:GetIndex()) <= 1) then
+					if globals.TickCount() - last_spam > 3 then
+						if (localPlayer:GetTeamNumber() == 1) then
+							last_spam  = globals.TickCount()
+					        vote_cool_down, last_team_in = 0, 1
+					        client.Command("jointeam  0 " .. last_team_in)
+					    else
+							last_spam  = globals.TickCount()
+					        last_team_in = localPlayer:GetTeamNumber()
+					        client.Command("jointeam  1")
+					    end
+				    end
+				end
+			end
+		end
+
+		local bombText = ""
+		local textW, textH = 0, 0
+
+		if (teamSpam:GetValue() == true and localPlayer ~= nil) then
+			bombText = "Spamming!"
+			textW, textH = draw.GetTextSize(bombText)
+		else
+			bombText = "Not Spamming."
+			textW, textH = draw.GetTextSize(bombText)
+		end
+
+		drawRectFill(r, g, b, a, 10, leftHeight + 10, 160, 3)
+		drawRectFill(20, 20, 20, 120, 10, leftHeight + 13, 160, 10 + textH)
+		drawText(255, 255, 255, 255, 10 + ((160 / 2) - (textW / 2)), leftHeight + 18, watermarkFont, bombText)
+
+		leftHeight = leftHeight + 23 + textH
+	end
+end
+
+-- Watermark Drawing
+local function drawWatermark()
+	if (watermarkEnable:GetValue() == true) then
+		local divider = ' | '
+		local cheatName = 'aimware.net'
+		local userName
+		local delay
+		local tick
+		local server
+		local map
+		local time = os.date("%X")
+
+		local watermarkText = ''
+
+		if (localPlayer ~= nil) then
+			delay = 'delay: ' .. playerResources:GetPropInt("m_iPing", localPlayer:GetIndex()) .. ' ms'
+			tick = math.floor(localPlayer:GetProp("localdata", "m_nTickBase") + 0x20) * 2 .. ' tick'
+
+			if (engine.GetServerIP() ~= "loopback") then
+				server = engine.GetServerIP()
+			else
+				server = "localhost"
+			end
+
+			map = engine.GetMapName()
+			userName = client.GetPlayerNameByIndex(client.GetLocalPlayerIndex())
+		end
+
+		if (watermarkCheat:GetValue() == true) then
+			watermarkText = watermarkText .. cheatName .. divider
+		end
+
+		if (userName ~= nil) then
+			if (watermarkName:GetValue() == true) then
+				watermarkText = watermarkText .. userName .. divider
+			end
+		end
+
+		if (delay ~= nil) then
+			if (watermarkPing:GetValue() == true) then
+				watermarkText = watermarkText .. delay .. divider
+			end
+		end
+
+		if (tick ~= nil) then
+			if (watermarkTickrate:GetValue() == true) then
+				watermarkText = watermarkText .. tick .. divider
+			end
+		end
+
+		if (server ~= nil) then
+			if (watermarkServer:GetValue() == true) then
+				watermarkText = watermarkText .. server .. divider
+			end
+		end
+
+		if (map ~= nil) then
+			if (watermarkMap:GetValue() == true) then
+				watermarkText = watermarkText .. map .. divider
+			end
+		end
+		
+		watermarkText = watermarkText .. time
+
+		draw.SetFont(watermarkFont)
+		local textW, textH = draw.GetTextSize(watermarkText)
+		local positionWidth
+
+		if (watermarkPosition:GetValue() <= 1) then
+			positionWidth = 10
+		else
+			positionWidth = scrW - (textW + 20)
+		end
+
+		drawRectFill(r, g, b, a, positionWidth, 10, textW + 10, 3)
+		drawRectFill(20, 20, 20, 120, positionWidth, 13, textW + 10, textH + 6)
+		drawText(255, 255, 255, 255, positionWidth + 5, 16, watermarkFont, watermarkText)
+	end
+end
+
+-- Spectator List
+local function drawSpectators()
+	if (spectateEnable:GetValue() == true) then
+		drawRectFill(r, g, b, a, scrW - 235, rightHeight, 225, 3)
+		local spectateList = grabSpectateList()
+
+		draw.SetFont(spectateFont)
+		local textW, textH = 0, 0
+
+		for index, players in pairs(spectateList) do
+			local burnW, burnH = draw.GetTextSize(players:GetName())
+			textH = index * burnH
+		end
+
+		drawRectFill(20, 20, 20, 120, scrW - 235, rightHeight + 3, 225, textH + 20)
+
+		for index, players in pairs(spectateList) do
+			textW, textH = draw.GetTextSize(players:GetName())
+			drawText(255, 255, 255, 255, scrW - 230, rightHeight + (textH * index), spectateFont, players:GetName())	      
+	    end
+	end
+end
+
+-- Replacement HUD
+local function replacementHUD()
+	if (onionsHUD:GetValue() == true) then
+		if (client.GetConVar(onionsHUDCVar) ~= "1") then 
+			client.SetConVar(onionsHUDCVar, 1, true)
+		end
+
+		drawRectFill(r, g, b, a, 10, scrH - 113, scrW / 6, 3)
+		drawRectFill(20, 20, 20, 120, 10, scrH - 110, scrW / 6, 100)
+
+		-- Text
+		draw.SetFont(hudFont)
+		local localplName = client.GetPlayerNameByIndex(client.GetLocalPlayerIndex())
+		local text1W, text1H = 0, 0
+
+		if (localplName ~= nil) then
+			if (string.len(localplName) > 24) then
+				localplName = string.sub(localplName, 0, 24) .. "..."
+				text1W, text1H = draw.GetTextSize("Name: " .. localplName)
+			end
+		else
+			localplName = ""
+		end
+
+		local text2W, text2H = draw.GetTextSize("HP: " .. localPlayerHealth)
+
+		drawText(255, 255, 255, 255, 10 + ((scrW / 12) - (text1W / 2)), (scrH - 110) + 10, hudFont, "Name: " .. localplName)
+		drawRectFill(20, 20, 20, 255, 25 + text2W, ((scrH - 110) + text1H + 20) + ((text2H / 2) - (2)), ((scrW / 6) - text2W) - 25, 4)
+		if (localPlayer ~= nil) then
+			drawRectFill(r, g, b, a, 26 + text2W, ((scrH - 110) + text1H + 20) + ((text2H / 2) - (2)) + 1, ((((scrW / 6) - text2W) - 25) * (localPlayer:GetHealth() / localPlayer:GetMaxHealth())) - 2, 2)
+		end
+		drawText(255, 255, 255, 255, 20, ((scrH - 110) + text1H + 20), hudFont, "HP: " .. localPlayerHealth)
+	else
+		if (client.GetConVar(onionsHUDCVar) ~= "0") then 
+			client.SetConVar(onionsHUDCVar, 0, true)
+		end
+	end
+end
+
+-- Safe Leveling
+local function safeLevel()
+	if (deathmatchEnable:GetValue() == true) then
+		if (curScore >= deathmatchScore:GetValue()) then
+			if (firstLoad == true) then
+				last_team_in = localPlayer:GetTeamNumber()
+				client.Command("jointeam  1")
+				last_anti_afk = globals.TickCount()
+				firstLoad = false
+			else
+				if (globals.TickCount() - last_anti_afk >= (deathmatchTime:GetValue() * 64)) then
+					if (localPlayer:GetTeamNumber() ~= 1) then
+						client.Command("jointeam  1")
+						last_anti_afk = globals.TickCount()
+					else
+						client.Command("jointeam  0 1")
+						last_anti_afk = last_anti_afk - 32
+					end
+				end
+			end
+		end
+
+		if (deathmatchTimeHUD:GetValue() == true) then
+			draw.SetFont(watermarkFont)
+			local textW, textH = 0, 0
+
+			if (globals.TickCount() - last_anti_afk > (deathmatchTime:GetValue() * 64) or localPlayer == nil) then
+				textW, textH = draw.GetTextSize("Seconds: 0")
+			else
+				textW, textH = draw.GetTextSize("Seconds: " .. math.floor((globals.TickCount() - last_anti_afk) / 64))
+			end
+
+			drawRectFill(r, g, b, a, 10, leftHeight + 10, 160, 3)
+			drawRectFill(20, 20, 20, 120, 10, leftHeight + 13, 160, 20 + textH)
+			drawRectFill(25, 25, 25, 255, 15, leftHeight + 18, 150, 2)
+			if (globals.TickCount() - last_anti_afk > (deathmatchTime:GetValue() * 64) or localPlayer == nil) then
+				drawRectFill(255, 255, 255, 255, 15, leftHeight + 18, 150, 2)
+				drawText(255, 255, 255, 255, 15 + (80 - (textW / 2)), leftHeight + 25, watermarkFont, "Seconds: 0")
+			else
+				drawRectFill(255, 255, 255, 255, 15, leftHeight + 18, 150 * math.floor(((globals.TickCount() - last_anti_afk) / 64)) / deathmatchTime:GetValue(), 2)
+				drawText(255, 255, 255, 255, 15 + (80 - (textW / 2)), leftHeight + 25, watermarkFont, "Seconds: " .. math.floor(deathmatchTime:GetValue() - ((globals.TickCount() - last_anti_afk) / 64)))
+			end
+
+			leftHeight = leftHeight + 30 + textH
+		end
+
+		if (deathmatchScoreHUD:GetValue() == true) then
+			draw.SetFont(watermarkFont)
+			local textW, textH = draw.GetTextSize("Score: " .. curScore)
+
+			drawRectFill(r, g, b, a, 10, leftHeight + 10, 160, 3)
+			drawRectFill(20, 20, 20, 120, 10, leftHeight + 13, 160, 20 + textH)
+			drawRectFill(25, 25, 25, 255, 15, leftHeight + 18, 150, 2)
+
+			if (curScore <= deathmatchScore:GetValue()) then
+				drawRectFill(255, 255, 255, 255, 15, leftHeight + 18, 150 * (curScore / deathmatchScore:GetValue()), 2)
+			else
+				drawRectFill(255, 255, 255, 255, 15, leftHeight + 18, 150, 2)
+			end
+
+			drawText(255, 255, 255, 255, 15 + (80 - (textW / 2)), leftHeight + 25, watermarkFont, "Score: " .. curScore)
+
+			leftHeight = (leftHeight -  (11 / 2)) + 23 + textH
+		end
+	end
+end
+
+-- Finally Draw Everything
+local function drawFunc()
+	doUpdate()
+	deathNotice()
+	drawVelocity()
+	drawStats()
+	teamSpammer()
+	drawWatermark()
+	drawSpectators()
+	safeLevel()
+	replacementHUD()
+end
+
+-- Calling all the functions
+callbacks.Register( "Draw", variableSet )
+callbacks.Register( "Draw", drawFunc )
+callbacks.Register( "FireGameEvent", gameEvent )
+client.AllowListener("player_death")
+client.AllowListener("round_start")
+client.AllowListener("round_announce_match_start")
+client.AllowListener("client_disconnect")
