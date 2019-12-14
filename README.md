@@ -80,3 +80,6 @@ https://i.imgur.com/l3JWoIc.jpg
 
 [LuaScript] ewan's Essentials
 https://i.imgur.com/OFefXDu.png
+
+[LuaScript] Automatic Resolver
+https://i.imgur.com/1ztfEVn.png
