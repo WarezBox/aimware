@@ -8,3 +8,5 @@
 [LuaScript V5] View Model Extender: https://www.youtube.com/watch?v=RFWZQoCbkUI
 
 [LuaScript V5] Smoke timer ESP: https://i.imgur.com/3zHTwtC.png
+
+[LuaScript V5] Simple Night mode: https://i.imgur.com/JxWDbuL.mp4
