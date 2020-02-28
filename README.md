@@ -15,4 +15,4 @@
 
 [LuaScript V5] AutoBuy: https://i.imgur.com/fPvixOP.png
 
-[LuaScript V5] Skybox Changer: https://i.imgur.com/OqUO07s.png | https://i.imgur.com/ui23sb5.jpg | https://i.imgur.com/7EhLAZG.jpg
+[LuaScript V5] Skybox Changer: https://i.imgur.com/OqUO07s.png | https://i.imgur.com/ui23sb5.jpg
