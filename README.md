@@ -12,3 +12,5 @@
 [LuaScript V5] Simple Night mode: https://i.imgur.com/JxWDbuL.mp4
 
 [LuaScript V5] Fog ESP v3: https://i.imgur.com/L2yiMmy.jpg
+
+[LuaScript V5] AutoBuy: https://i.imgur.com/fPvixOP.png
