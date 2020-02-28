@@ -16,3 +16,5 @@
 [LuaScript V5] AutoBuy: https://i.imgur.com/fPvixOP.png
 
 [LuaScript V5] Skybox Changer: https://i.imgur.com/OqUO07s.png | https://i.imgur.com/ui23sb5.jpg
+
+[LuaScript V5] World Modulation: https://i.imgur.com/SGn98yh.png | https://i.imgur.com/tqNMJvT.jpg
