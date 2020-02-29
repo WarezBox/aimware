@@ -18,3 +18,5 @@
 [LuaScript V5] Skybox Changer: https://i.imgur.com/OqUO07s.png | https://i.imgur.com/ui23sb5.jpg
 
 [LuaScript V5] World Modulation: https://i.imgur.com/SGn98yh.png | https://i.imgur.com/tqNMJvT.jpg
+
+[LuaScript V5] BetterSync - Release 3.4: https://i.imgur.com/rCo8mlc.png
