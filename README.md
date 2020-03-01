@@ -27,4 +27,6 @@
 
 [LuaScript V5] Mass Invite: https://i.imgur.com/XrUQi7o.gif
 
+[LuaScript V5] InfoBar: https://www.youtube.com/watch?v=nhD0NiamMB8
+
 [LuaScript V5] Auto Accept: https://i.imgur.com/5oAtawx.png
