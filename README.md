@@ -24,3 +24,5 @@
 [LuaScript V5] Blockbot: https://i.imgur.com/f0NyRMt.jpg
 
 [LuaScript V5] Engine Radar Hack: https://i.imgur.com/CCFQhOm.png
+
+[LuaScript V5] Mass Invite: https://i.imgur.com/XrUQi7o.gif
