@@ -22,3 +22,5 @@
 [LuaScript V5] BetterSync - Release 3.4: https://i.imgur.com/rCo8mlc.png
 
 [LuaScript V5] Blockbot: https://i.imgur.com/f0NyRMt.jpg
+
+[LuaScript V5] Engine Radar Hack: https://i.imgur.com/CCFQhOm.png
