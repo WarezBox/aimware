@@ -27,6 +27,9 @@
 
 [LuaScript V5] Mass Invite: https://i.imgur.com/XrUQi7o.gif
 
+[LuaScript V5] Custom hitsound with Healthshot hitmarker: https://i.imgur.com/Z19av6f.jpg | https://youtu.be/tgEDeKPeHh8
+Updated: Added custom hitsound selector with some features, migrated controls to misc > general > main
+
 [LuaScript V5] InfoBar: https://www.youtube.com/watch?v=nhD0NiamMB8
 
 [LuaScript V5] Auto Accept: https://i.imgur.com/5oAtawx.png
