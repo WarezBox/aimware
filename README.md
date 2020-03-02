@@ -33,3 +33,5 @@ Updated: Added custom hitsound selector with some features, migrated controls to
 [LuaScript V5] InfoBar: https://www.youtube.com/watch?v=nhD0NiamMB8
 
 [LuaScript V5] Auto Accept: https://i.imgur.com/5oAtawx.png
+
+[LuaScript V5] Troll Menu: https://i.imgur.com/l90Ms4Z.png | Fake Skin, Fake Ban, Fake Vote, Fake Kick
