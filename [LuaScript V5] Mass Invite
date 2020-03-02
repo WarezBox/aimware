@@ -69,3 +69,29 @@ gui.Button(OnyxInviteGroupbox, "Invite all friends", function()
         }
     ]]) 
 end)
+
+end)
+
+gui.Button(OnyxInviteGroupbox, "Mass invite nearbies", function()
+    panorama.RunScript([[
+        collectedSteamIDS.forEach(xuid => {
+            FriendsListAPI.ActionInviteFriend(xuid, "");
+        });
+    ]])
+end)
+
+gui.Button(OnyxInviteGroupbox, "Print invite collection", function()
+    panorama.RunScript([[
+        $.Msg(collectedSteamIDS);
+    ]])
+end)
+
+gui.Button(OnyxInviteGroupbox, "Invite all friends", function()
+    panorama.RunScript([[
+        var friends = FriendsListAPI.GetCount();
+        for (var id = 0; id < friends; id++) {
+            var xuid = FriendsListAPI.GetXuidByIndex(id);
+            FriendsListAPI.ActionInviteFriend(xuid, "");
+        }
+    ]]) 
+end)
