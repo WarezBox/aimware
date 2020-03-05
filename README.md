@@ -41,3 +41,5 @@ Updated: Added custom hitsound selector with some features, migrated controls to
 [LuaScript V5] [Onyx] Invite Everyone: https://i.imgur.com/nGiXTa8.png
 
 [LuaScript V5] Gamesense Watermark: https://streamable.com/s/mnkra/bvrej
+
+[LuaScript V5]  Vote Revealer: https://i.imgur.com/7UwSEti.png
