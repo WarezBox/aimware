@@ -39,3 +39,5 @@ Updated: Added custom hitsound selector with some features, migrated controls to
 [LuaScript V5] Bomb Info: https://i.imgur.com/bNp5u9L.png
 
 [LuaScript V5] [Onyx] Invite Everyone: https://i.imgur.com/nGiXTa8.png
+
+[LuaScript V5] [Onyx] Gamesense Watermark: https://streamable.com/s/mnkra/bvrej
