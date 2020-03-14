@@ -45,3 +45,5 @@ Updated: Added custom hitsound selector with some features, migrated controls to
 [LuaScript V5]  Vote Revealer: https://i.imgur.com/7UwSEti.png
 
 [LuaScript V5] OriLua: Youtube Video In Comming
+
+[LuaScript V5] FakePrime: https://www.youtube.com/watch?v=s3c09J0vF5Y
